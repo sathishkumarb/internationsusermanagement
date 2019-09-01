@@ -1,0 +1,13 @@
+{% block content -%}
+<h1>Edit User ({{ entity.username }})</h1>
+
+    {{ form(form) }}
+
+<ul class="record_actions">
+    <li>
+        <a href="{{ path('users') }}">
+            Back to users
+        </a>
+    </li>
+</ul>
+{% endblock %}
