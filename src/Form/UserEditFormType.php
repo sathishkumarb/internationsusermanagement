@@ -39,8 +39,7 @@ class UserEditFormType extends AbstractType
                 ],
             ])
            ->add('groups', EntityType::class, array(
-                'class'    => Group::class,
-                
+                'class'    => Group::class,                
                 'label'    => 'Positions',
                 'expanded' => false,
                 'multiple' => true,
