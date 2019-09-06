@@ -17,14 +17,10 @@ class Group extends BaseGroup
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-     protected $id;
-	 
-	 /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="groups")
-     */
-    protected $users;
+     protected $id; 
 	
-	 public function __toString() {
+	
+	public function __toString() {
 		return $this->name;
-	 }
+	}
 }

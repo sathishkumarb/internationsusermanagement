@@ -27,7 +27,7 @@ class UserGroup
     protected $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\group")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Group")
      * @ORM\JoinColumn(name="group_id", referencedColumnName="id")
      */
     protected $group;

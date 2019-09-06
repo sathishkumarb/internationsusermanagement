@@ -26,7 +26,7 @@ use App\Entity\Group;
 /**
  * RESTful controller managing group CRUD
  *
- * @author sathish
+ * @author 
  */
 class GroupController extends Controller
 {
@@ -35,6 +35,7 @@ class GroupController extends Controller
      */
     public function listAction()
     {
+		echo "sa";
         $groups = $this->get('groups')->findGroups();
 
         return $this->render('FOSUserBundle:Group:list.html.twig', array(
@@ -90,16 +91,7 @@ class GroupController extends Controller
 
             $groupManager->updateGroup($group);
 
-            $cmsEm = $this->get('doctrine')->getManager('cms');
-
-            // replicating cms groups into cms db by reflecting into reflection cmsgroups -update
-            $reflectionGroup = $cmsEm->getRepository('App\Entity\Group')->findOneBy(array('gid'=>$group->getId()));
-
-            $reflectionGroup->setName($group->getName());
-            $reflectionGroup->setRoles(serialize($group->getRoles()));
-
-            $cmsEm->persist($reflectionGroup);
-            $cmsEm->flush();
+           
 
             if (null === $response = $event->getResponse()) {
                 $url = $this->generateUrl('user_group_show', array('groupName' => $group->getName()));
@@ -144,17 +136,14 @@ class GroupController extends Controller
 
             $groupManager->updateGroup($group);
 
-            if (null === $response = $event->getResponse()) {
-                $url = $this->generateUrl('ccm_user_group_show', array('groupName' => $group->getName()));
-                $response = new RedirectResponse($url);
-            }
+            
 
             $dispatcher->dispatch(FOSUserEvents::GROUP_CREATE_COMPLETED, new FilterGroupResponseEvent($group, $request, $response));
 
             return $response;
         }
 
-        return $this->render('FOSUserBundle:CcmGroup:new.html.twig', array(
+        return $this->render('FOSUserBundle:Group:new.html.twig', array(
             'form' => $form->createview(),
         ));
     }

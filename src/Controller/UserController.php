@@ -30,9 +30,20 @@ class UserController extends AbstractController {
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('App\Entity\User')->findAll();
+		
+		foreach($entities as $index => $entity)
+		{
+			
+			 $groups = $em->getRepository('App\Entity\UserGroup')->findBy(array('user'=>$entity->getId()));
+			
+			 $usergroups[$entity->getId()]['groups'] = $groups;
+			 
+			 $usergroups[$entity->getId()]['user'] = $entity;
+		}		
+			
 
         return array(
-            'entities' => $entities,
+            'entities' => $usergroups,
         );
     }
 
@@ -68,8 +79,7 @@ class UserController extends AbstractController {
      */
     private function createEditForm(User $entity) {
 
-		echo "sa";
-		//exit;
+
 		$form = $this->createForm(UserEditFormType::class, $entity, array(
             'action' => $this->generateUrl('user_update', array('id' => $entity->getId())),
             'method' => 'POST',
@@ -125,21 +135,20 @@ class UserController extends AbstractController {
 /**
  * Edits an existing UserProjectGroup entity.
  *
- * @Route("/{username}/delete", name="user_delete")
+ * @Route("/{id}/delete", name="user_delete")
  * @Method("POST")
  */
-public function deleteAction($username) {
-  $userManager = $this->get('fos_user.user_manager');
-  /* @var $userManager UserManager */
+public function deleteAction(Request $request, $id) {
+ $em = $this->getDoctrine()->getManager();		
 
-  $user = $userManager->findUserByUsername($username);
-  if(\is_null($user)) {
-    // user not found, generate $notFoundResponse
-    return $notFoundResponse;
-  }
-
-  \assert(!\is_null($user));
-  $userManager->deleteUser($user);
+        $user = $em->getRepository(User::class)->find($id);
+        
+        if (!$user) {
+            throw $this->createNotFoundException('Unable to find User entity.');
+        }
+		
+		$em->remove($user);
+        $em->flush();
 
   // okay, generate $okayResponse
   return $okayResponse;

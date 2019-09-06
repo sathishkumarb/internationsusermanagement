@@ -5,20 +5,53 @@
     <thead>
         <tr>
             <th>Username</th>
+			<th>groups</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         {% for entity in entities %}
             <tr>
-                <td>{{ entity.username }}</td>
-                <td>
-                    <ul>
+                <td>{{ entity.user.username }}</td>
+				<td>
+                   
+					<table>				
+					
+					
+					 {% for group in entity.groups %}
+					 <tr>
+						 <td>
+						   {{ group.group.name }}
+						   <ul>
                        
-                        <li>
-                            <a href="{{ path('user_edit', { 'id': entity.id }) }}">edit</a>
-                        </li>
-                    </ul>
+								<li>
+									<a href="{{ path('user_edit', { 'id': entity.user.id }) }}">edit</a>
+								</li>
+							
+							   
+								<li>
+									<a href="{{ path('user_delete', { 'id': entity.user.id }) }}">delete</a>
+								</li>
+							</ul>
+						 </td>
+					 </tr>
+					 {% endfor %}
+					
+					 <table>
+                </td>
+                <td>                 
+					 <ul>
+                       
+								<li>
+									<a href="{{ path('user_edit', { 'id': entity.user.id }) }}">edit</a>
+								</li>
+							
+							   
+								<li>
+									<a href="{{ path('user_delete', { 'id': entity.user.id }) }}">delete</a>
+								</li>
+							</ul>
+					
                 </td>
             </tr>
         {% endfor %}
