@@ -8,8 +8,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use App\Entity\User;
+use App\Entity\User as User;
 use App\Form\UserEditFormType;
+
+use App\Entity\UserGroup as UserGroup;
 
 
 /**
@@ -66,10 +68,11 @@ class UserController extends AbstractController {
      */
     private function createEditForm(User $entity) {
 
-		
+		echo "sa";
+		//exit;
 		$form = $this->createForm(UserEditFormType::class, $entity, array(
             'action' => $this->generateUrl('user_update', array('id' => $entity->getId())),
-            'method' => 'PUT',
+            'method' => 'POST',
                 ));
 
         //$form->add('submit', 'submit', $this->options(array('label' => 'Update', 'attr' => array('class' => 'right')), 'btn'));
@@ -80,27 +83,65 @@ class UserController extends AbstractController {
     /**
      * Edits an existing UserProjectGroup entity.
      *
-     * @Route("/{id}/edit", name="user_update")
-     * @Method("PUT")
+     * @Route("/{id}/update", name="user_update")
+     * @Method("POST")
      */
     public function updateAction(Request $request, $id) {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();		
 
-
-        $entity = $em->getRepository('App\Entity\User')->find($id);
+        $user = $em->getRepository(User::class)->find($id);
         
-        if (!$entity) {
+        if (!$user) {
             throw $this->createNotFoundException('Unable to find User entity.');
         }
-
-        $form = $this->createEditForm($entity);
+		     
+		$entity = new UserGroup($user);
+        
+        $form = $this->createEditForm($user,$id);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+			
+            
+            $entity->setUser($user);			
+			
+			if ($form->getData()->getGroups())
+			{
+				
+				foreach($form->getData()->getGroups() as $group)
+				{
+				
+					$entity->setGroup($group);
+				}
+			}
+
+            $em->merge($entity);
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('user_edit', array('id' => $entity->getId())));
+        return $this->redirect($this->generateUrl('user_edit', array('id' => $user->getId())));
     }
+	
+/**
+ * Edits an existing UserProjectGroup entity.
+ *
+ * @Route("/{username}/delete", name="user_delete")
+ * @Method("POST")
+ */
+public function deleteAction($username) {
+  $userManager = $this->get('fos_user.user_manager');
+  /* @var $userManager UserManager */
 
+  $user = $userManager->findUserByUsername($username);
+  if(\is_null($user)) {
+    // user not found, generate $notFoundResponse
+    return $notFoundResponse;
+  }
+
+  \assert(!\is_null($user));
+  $userManager->deleteUser($user);
+
+  // okay, generate $okayResponse
+  return $okayResponse;
+}
 }

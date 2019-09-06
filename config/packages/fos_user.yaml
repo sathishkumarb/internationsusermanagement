@@ -5,5 +5,5 @@ fos_user:
     group:
         group_class: App\Entity\Group
     from_email:
-        address: "vincent@vfac.fr"
-        sender_name: "vincent@vfac.fr"
+        address: "meet.sathish@gmail.com"
+        sender_name: "meet.sathish@gmail.com"

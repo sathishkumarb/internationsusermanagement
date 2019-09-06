@@ -6,6 +6,8 @@ namespace App\Entity;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
@@ -21,13 +23,13 @@ class User extends BaseUser
      */
     protected $id;
 	
-	/**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Group")
-     * @ORM\JoinTable(name="fos_user_user_group",
-     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")}
-     * )
-     */
+	/*
+	* @ORM\ManyToMany(targetEntity="App\Entity\Group", inversedBy="users")
+	* @ORM\JoinTable(name="fos_user_user_group",
+	*      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+	*      inverseJoinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")}
+	* )
+	*/
     protected $groups;
 
     public function __construct()
@@ -35,4 +37,6 @@ class User extends BaseUser
         parent::__construct();
         // your own logic
     }
+	
+	
 }
