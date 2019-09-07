@@ -11,6 +11,7 @@ composer require --dev symfony/annotations
 composer require --dev symfony/doctrine
 composer require symfony/security-bundle
 composer require onurb/doctrine-yuml-bundle
+composer require stof/doctrine-extensions-bundle
 
 ```
 
