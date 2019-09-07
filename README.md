@@ -1,6 +1,8 @@
 
 # Installation
 
+``` composer symfony plugins
+
 composer require --dev symfony/form
 composer require --dev symfony/maker-bundle
 composer require --dev symfony/translation
@@ -9,6 +11,8 @@ composer require --dev symfony/annotations
 composer require --dev symfony/doctrine
 composer require symfony/security-bundle
 composer require onurb/doctrine-yuml-bundle
+
+```
 
 
 ## Set Up
