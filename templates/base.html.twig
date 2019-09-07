@@ -6,7 +6,82 @@
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+	
+	<div>
+            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
+                <a href="{{ path('fos_user_security_logout') }}">
+                    {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                </a>
+            {% else %}
+                <a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
+            {% endif %}
+        </div>
+
+        {% if app.request.hasPreviousSession %}
+            {% for type, messages in app.session.flashBag.all %}
+                {% for message in messages %}
+                    <div class="{{ type }}">
+                        {{ message|trans({}, 'FOSUserBundle') }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
+
+        <div>
+            {% block fos_user_content %}
+            {% endblock fos_user_content %}
+        </div>
+        {% block content %}{% endblock %}
+        {% block javascripts %}{% endblock %}		
+		
+   
+
+       {% for label, flashes in app.session.flashbag.all %}
+			{% for flash in flashes %}
+				{% if ( label == 'success' ) %}
+					<div class="alert alert-success alert-dismissible fade show">
+						{{ flash }}
+					</div>
+				{% elseif ( label == 'error' ) %}
+					<div class="alert alert-danger alert-dismissible fade show">
+						{{ flash }}
+					</div>
+				{% endif %}
+			{% endfor %}
+		{% endfor %}
+
+		<ul>
+			<li>
+				<a href="{{ path('users') }}">
+					Back to users
+				</a>
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="{{ path('user_new') }}">
+					Create a new user
+				</a>
+			</li>
+		</ul>
+		
+		<ul>
+			<li>
+				<a href="{{ path('fos_user_group_new') }}">
+					Create a new group
+				</a>
+			</li>
+		</ul>
+		
+		<ul>
+			<li>
+				<a href="{{ path('fos_user_group_list') }}">
+					Groups
+				</a>
+			</li>
+		</ul>
+
+
     </body>
 </html>

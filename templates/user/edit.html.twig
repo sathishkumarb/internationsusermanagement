@@ -1,36 +1,8 @@
-{% block content -%}
+{% extends 'base.html.twig' %}
+{% block content %}
 <h1>Edit User ({{ entity.username }})</h1>
 
     {{ form(form) }}
 
-<ul class="record_actions">
-    <li>
-        <a href="{{ path('users') }}">
-            Back to users
-        </a>
-    </li>
-</ul>
-<ul>
-        <li>
-            <a href="{{ path('user_new') }}">
-                Create a new user
-            </a>
-        </li>
-    </ul>
-	
-	<ul>
-        <li>
-            <a href="{{ path('fos_user_group_new') }}">
-                Create a new group
-            </a>
-        </li>
-    </ul>
-	
-	<ul>
-        <li>
-            <a href="{{ path('fos_user_group_list') }}">
-                Groups
-            </a>
-        </li>
-    </ul>
+
 {% endblock %}

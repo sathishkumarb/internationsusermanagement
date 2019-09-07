@@ -192,8 +192,7 @@ class UserController extends AbstractController {
 				{
 				
 					if ($form->getData()->getGroups())
-					{
-						
+					{					
 						
 						
 						foreach($form->getData()->getGroups() as $group)
@@ -215,7 +214,8 @@ class UserController extends AbstractController {
 					$em->flush();
 				}
 				catch(\Exception $e){
-					error_log($e->getMessage());
+					echo $e->getMessage();
+					exit;
 				}
 				
 			}
@@ -231,30 +231,47 @@ class UserController extends AbstractController {
 	 */
 	public function deleteAction(Request $request, $id) {
 		
-		if ($request->isMethod('post')) {
+		if ($request->isMethod('get')) {
 			
-			try
+	
+			$em = $this->getDoctrine()->getManager();		
+
+			$user = $em->getRepository(User::class)->find($id);
+
+			if (!$user) {
+				throw $this->createNotFoundException('Unable to find User entity.');
+			}
+			
+			$groupsFind = $em->getRepository('App\Entity\UserGroup')->findBy(array('user'=>$user->getId()));
+	
+			if (!$groupsFind)
 			{
-				$em = $this->getDoctrine()->getManager();		
+		
+				try
+				{
+			
+						$em->remove($user);
+						$em->flush();
 
-				$user = $em->getRepository(User::class)->find($id);
-
-				if (!$user) {
-					throw $this->createNotFoundException('Unable to find User entity.');
+						// okay, generate $okayResponse
+						return $this->redirect($this->generateUrl('users'));
 				}
-			
-			
-				$em->remove($user);
-				$em->flush();
+				catch(\Exception $e){
+					$this->addFlash('warning', 'delete group failed!');
 
-				// okay, generate $okayResponse
-				return $this->redirect($this->generateUrl('users'));
+				}
 			}
-			catch(\Exception $e){
-				error_log($e->getMessage());
+			else
+			{
+				
+				$this->addFlash('warning', 'cannot delete the user, user is a member of a group!');
+				
+				
 			}
+			return $this->redirect($this->generateUrl('users'));
 
-		}
+		}		
+		
 	}
 		
 	
@@ -266,7 +283,8 @@ class UserController extends AbstractController {
 	 */
 	public function deleteusergroupAction(Request $request, $id) {
 		
-		if ($request->isMethod('get')) {
+		if ($request->isMethod('get')) {		
+			
 		
 			try
 			{
@@ -282,7 +300,9 @@ class UserController extends AbstractController {
 				$em->flush();
 			}
 			catch(\Exception $e){
-				error_log($e->getMessage());
+				$this->addFlash('warning', 'delete group failed!');
+				
+				
 			}
 
 		// okay, generate $okayResponse
@@ -301,7 +321,7 @@ class UserController extends AbstractController {
     public function deletegroupAction(Request $request, $id)
     {
        
-		if ($request->isMethod('get')) {
+		if ($request->isMethod('GET')) {			
 			
 	
 			try{
@@ -322,24 +342,23 @@ class UserController extends AbstractController {
 					$em->flush();
 
 					// okay, generate $okayResponse
-					return $this->redirect($this->generateUrl('users'));
+					return $this->redirect($this->generateUrl('fos_user_group_list'));
 				}
 				else
 				{
-					$this->addFlash('warning', 'cannot delete as user is attached!');
+					$this->addFlash('warning', 'cannot delete the group as user is already a member of this group!');
 					return $this->redirect($this->generateUrl('fos_user_group_list'));
 				}
 			}
-				catch(\Exception $e){
-					error_log($e->getMessage());
-				}
+			catch(\Exception $e){
+				$this->addFlash('warning', 'delete group had error!');
+			}
 			
-		}
-		
+		}	
 	
 		
 		return $this->redirect($this->generateUrl('fos_user_group_list'));
 	
 	
-}
+    }
 }

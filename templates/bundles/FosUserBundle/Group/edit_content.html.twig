@@ -1,3 +1,5 @@
+{% extends 'base.html.twig' %}
+{% block content %}
 {% trans_default_domain 'FOSUserBundle' %}
 
 {{ form_start(form, { 'action': path('fos_user_group_edit', {'groupName': group_name}), 'attr': { 'class': 'fos_user_group_edit' } }) }}
@@ -6,27 +8,7 @@
         <input type="submit" value="{{ 'group.edit.submit'|trans }}" />
     </div>
 	
-	<ul>
-        <li>
-            <a href="{{ path('user_new') }}">
-                Create a new user
-            </a>
-        </li>
-    </ul>
 	
-	<ul>
-        <li>
-            <a href="{{ path('fos_user_group_new') }}">
-                Create a new group
-            </a>
-        </li>
-    </ul>
-	
-	<ul>
-        <li>
-            <a href="{{ path('fos_user_group_list') }}">
-                Groups
-            </a>
-        </li>
-    </ul>
 {{ form_end(form) }}
+
+{% endblock %}

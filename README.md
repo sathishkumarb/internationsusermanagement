@@ -46,12 +46,27 @@ http:/127.0.0.1:8000/group/list
 
 ```routes
 doctrine_yuml_mapping               ANY        ANY      ANY    /my_prefix/yuml
+
+To list users
 users                               ANY        ANY      ANY    /users/
+
+To create user
 user_new                            ANY        ANY      ANY    /users/new
+
+To edit the user with id as get parameter
 user_edit                           ANY        ANY      ANY    /users/{id}/edit
 user_update                         POST       ANY      ANY    /users/{id}/update
+
+
+To delete the user with id as get parameter (there is a validation if a member of a group)
 user_delete                         GET        ANY      ANY    /users/{id}/delete
+
+
+To remove the user from group
 user_group_delete                   GET        ANY      ANY    /users/{id}/deleteusergroup
+
+
+To delete the group
 group_delete                        GET        ANY      ANY    /users/{id}/deletegroup
 fos_user_group_list                 GET        ANY      ANY    /group/list
 fos_user_group_new                  GET|POST   ANY      ANY    /group/new
@@ -60,11 +75,6 @@ fos_user_group_edit                 GET|POST   ANY      ANY    /group/{groupName
 fos_user_group_delete               GET        ANY      ANY    /group/{groupName}/delete
 ```
 
-``` to see full list of routes
-
-php bin/console debug:router
-
-```
 
 ## Notes
 

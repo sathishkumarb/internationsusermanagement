@@ -1,3 +1,5 @@
+{% extends 'base.html.twig' %}
+
 {% block content %}
 <h1>Users</h1>
 
@@ -31,7 +33,7 @@
 						   <ul>
                        
 								<li>
-									<a href="{{ path('user_group_delete', { 'id': group.group.id }) }}">Remove group</a>
+									<a href="{{ path('user_group_delete', { 'id': group.id }) }}">Remove group</a>
 								</li>
 								
 							</ul>
@@ -66,28 +68,4 @@
         </tbody>
     </table>
 
-
-    <ul>
-        <li>
-            <a href="{{ path('user_new') }}">
-                Create a new user
-            </a>
-        </li>
-    </ul>
-	
-	<ul>
-        <li>
-            <a href="{{ path('fos_user_group_new') }}">
-                Create a new group
-            </a>
-        </li>
-    </ul>
-	
-	<ul>
-        <li>
-            <a href="{{ path('fos_user_group_list') }}">
-                Groups
-            </a>
-        </li>
-    </ul>
     {% endblock %}

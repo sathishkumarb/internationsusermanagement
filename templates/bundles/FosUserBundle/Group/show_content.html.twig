@@ -1,31 +1,9 @@
+{% extends 'base.html.twig' %}
+{% block content %}
 {% trans_default_domain 'FOSUserBundle' %}
 
 <div class="fos_user_group_show">
     <p>{{ 'group.show.name'|trans }}: {{ group.getName() }}</p>
 </div>
+{% endblock %}
 
-<div>
-<ul>
-        <li>
-            <a href="{{ path('user_new') }}">
-                Create a new user
-            </a>
-        </li>
-    </ul>
-	
-	<ul>
-        <li>
-            <a href="{{ path('fos_user_group_new') }}">
-                Create a new group
-            </a>
-        </li>
-    </ul>
-	
-	<ul>
-        <li>
-            <a href="{{ path('fos_user_group_list') }}">
-                Groups
-            </a>
-        </li>
-    </ul>
-</div>
