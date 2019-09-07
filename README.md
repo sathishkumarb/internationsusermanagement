@@ -1,26 +1,4 @@
 
-
-
-
-Set up::
-
-
-
-
-please refer uml in root path:
-
-yuml-mapping.png 
-
-
-run through::
-
-
- 
- 
- Useful complete routes or endpoints to use anywhere else as i did not develop a API routes
- 
-  
-  
 # Installation
 
 composer require --dev symfony/form
@@ -58,13 +36,9 @@ http:/127.0.0.1:8000/group/list
 
 ```
 
-```routes
-
-php bin/console debug:router
-
-```
-
 ## Useful Internal API routes
+
+```routes
 doctrine_yuml_mapping               ANY        ANY      ANY    /my_prefix/yuml
 users                               ANY        ANY      ANY    /users/
 user_new                            ANY        ANY      ANY    /users/new
@@ -78,6 +52,13 @@ fos_user_group_new                  GET|POST   ANY      ANY    /group/new
 fos_user_group_show                 GET        ANY      ANY    /group/{groupName}
 fos_user_group_edit                 GET|POST   ANY      ANY    /group/{groupName}/edit
 fos_user_group_delete               GET        ANY      ANY    /group/{groupName}/delete
+```
+
+``` to see full list of routes
+
+php bin/console debug:router
+
+```
 
 
 
