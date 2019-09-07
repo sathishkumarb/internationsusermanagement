@@ -1,6 +1,4 @@
-installations
-
-Installations::
+Installation::
 
 composer require --dev symfony/form
 composer require --dev symfony/maker-bundle
@@ -9,37 +7,36 @@ composer require --dev symfony/orm-make
 composer require --dev symfony/annotations
 composer require --dev symfony/doctrine
 composer require symfony/security-bundle
-
 composer require onurb/doctrine-yuml-bundle
 
-
-set up::
-
-php bin/console make:registration-form
+Set up::
 
 php bin/console make:migration
-
-or 
-
-php bin/console make:user
-
-php bin/console make:migration
-
 
 
 Initial or default admin user creation:: atleast one admin user
 
 php bin/console fos:user:create
 
-php app/console fos:user:promote "username" ROLE_SUPER_ADMIN
+php bin/console fos:user:promote "username" ROLE_SUPER_ADMIN
 
 
 please refer uml in root path:
 
 yuml-mapping.png 
+
+
+
+run through::
+
+php bin/console server:run
+
+http:/127.0.0.1:8000/users
+
+http:/127.0.0.1:8000/group/list
  
  
- Routes or endpoints to use anywhere else as i did not develop a API routes
+ Useful complete routes or endpoints to use anywhere else as i did not develop a API routes
  
  
   users                               ANY        ANY      ANY    /users/
