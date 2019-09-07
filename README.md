@@ -79,6 +79,8 @@ fos_user_group_delete               GET        ANY      ANY    /group/{groupName
 ## Notes
 
 ```
+FOSUSERBUNDLE is overridden and customer user group controller created along overrding fosuser
+
 HTTP PUT & DELETE was not handled via form might be a slight security breach here due to time constraints in edit and delete routes
 
 Please dont hesitate to compliant a bug or feedback
