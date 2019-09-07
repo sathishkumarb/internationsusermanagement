@@ -21,6 +21,7 @@ class UserFormType extends AbstractType
     {
         $builder
             ->add('username')
+			->add('name')
 			->add('email')            
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,

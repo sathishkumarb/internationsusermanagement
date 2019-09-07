@@ -16,13 +16,8 @@
 
     {{ form_start(form) }}
     <table style="width: 100%">
-    {{ form_row(form.username) }}
-    {{ form_row(form.email) }}
-
-    {{ form_row(form.plainPassword, { 'attr': {'class': 'form-control', 'placeholder': 'Enter your password', 'value':''}  }) }}
     
-
-  
+	{{ form_rest(form) }}  
     {{ form_end(form) }}
     </table>
 
