@@ -1,0 +1,13 @@
+stof_doctrine_extensions:
+    default_locale: en_US
+    orm:
+        default:
+            tree: true
+            timestampable: true # not needed: listeners are not enabled by default
+            blameable:      true
+            sluggable:      ~
+            translatable:   ~
+            loggable:       ~
+            softdeleteable: true
+            uploadable:     ~
+        

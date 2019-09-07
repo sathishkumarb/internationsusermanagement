@@ -20,6 +20,8 @@ composer require onurb/doctrine-yuml-bundle
 ```bash
 php bin/console make:migration
 
+php bin/console doctrine:migrations:migrate
+
 
 Initial or default admin user creation:: atleast one admin user
 
