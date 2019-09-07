@@ -13,6 +13,8 @@ use App\Form\UserEditFormType;
 
 use App\Entity\UserGroup as UserGroup;
 
+use App\Entity\Group as Group;
+
 
 /**
  * @Route("users")
@@ -93,64 +95,178 @@ class UserController extends AbstractController {
     /**
      * Edits an existing UserProjectGroup entity.
      *
-     * @Route("/{id}/update", name="user_update")
-     * @Method("POST")
+     * @Route("/{id}/update", name="user_update", methods={"POST"})
      */
     public function updateAction(Request $request, $id) {
-        $em = $this->getDoctrine()->getManager();		
+		
+		if ($request->isMethod('post')) {
+			$em = $this->getDoctrine()->getManager();		
 
-        $user = $em->getRepository(User::class)->find($id);
-        
-        if (!$user) {
-            throw $this->createNotFoundException('Unable to find User entity.');
-        }
-		     
-		$entity = new UserGroup($user);
-        
-        $form = $this->createEditForm($user,$id);
-        $form->handleRequest($request);
+			$user = $em->getRepository(User::class)->find($id);
+			
+			if (!$user) {
+				throw $this->createNotFoundException('Unable to find User entity.');
+			}
+				 
+			$entity = new UserGroup($user);
+			
+			$form = $this->createEditForm($user,$id);
+			$form->handleRequest($request);		
+		
 
-        if ($form->isValid()) {
-			
-            
-            $entity->setUser($user);			
-			
-			if ($form->getData()->getGroups())
-			{
-				
-				foreach($form->getData()->getGroups() as $group)
+			if ($form->isValid()) {
+				try
 				{
 				
-					$entity->setGroup($group);
+					if ($form->getData()->getGroups())
+					{
+						
+						
+						
+						foreach($form->getData()->getGroups() as $group)
+						{
+							
+							$groupsFind = $em->getRepository('App\Entity\UserGroup')->findBy(array('user'=>$user->getId(), 'group'=>$group->getId()));
+							
+							if (!$groupsFind)
+							{
+								$entity->setUser($user);		
+							
+								$entity->setGroup($group);
+								$em->merge($entity);
+							}
+						}
+					}
+
+					
+					$em->flush();
 				}
+				catch(\Exception $e){
+					error_log($e->getMessage());
+				}
+				
 			}
 
-            $em->merge($entity);
-            $em->flush();
-        }
-
-        return $this->redirect($this->generateUrl('user_edit', array('id' => $user->getId())));
-    }
+			return $this->redirect($this->generateUrl('users'));
+		}
+	}
 	
-/**
- * Edits an existing UserProjectGroup entity.
- *
- * @Route("/{id}/delete", name="user_delete")
- * @Method("POST")
- */
-public function deleteAction(Request $request, $id) {
- $em = $this->getDoctrine()->getManager();		
-
-        $user = $em->getRepository(User::class)->find($id);
-        
-        if (!$user) {
-            throw $this->createNotFoundException('Unable to find User entity.');
-        }
+	/**
+	 * Edits an existing UserProjectGroup entity.
+	 *
+	 * @Route("/{id}/delete", name="user_delete",  methods={"GET"})
+	 */
+	public function deleteAction(Request $request, $id) {
 		
-		$em->remove($user);
-        $em->flush();
+		if ($request->isMethod('post')) {
+			
+			try
+			{
+				$em = $this->getDoctrine()->getManager();		
 
-  // okay, generate $okayResponse
-  return $okayResponse;
+				$user = $em->getRepository(User::class)->find($id);
+
+				if (!$user) {
+					throw $this->createNotFoundException('Unable to find User entity.');
+				}
+			
+			
+				$em->remove($user);
+				$em->flush();
+
+				// okay, generate $okayResponse
+				return $this->redirect($this->generateUrl('users'));
+			}
+			catch(\Exception $e){
+				error_log($e->getMessage());
+			}
+
+		}
+	}
+		
+	
+	
+	/**
+	 * Edits an existing UserProjectGroup entity.
+	 *
+	 * @Route("/{id}/deleteusergroup", name="user_group_delete", methods={"GET"})
+	 */
+	public function deleteusergroupAction(Request $request, $id) {
+		
+		if ($request->isMethod('get')) {
+		
+			try
+			{
+				$em = $this->getDoctrine()->getManager();		
+
+				$userGr = $em->getRepository(UserGroup::class)->find($id);
+
+				if (!$userGr) {
+				throw $this->createNotFoundException('Unable to find User entity.');
+				}
+
+				$em->remove($userGr);
+				$em->flush();
+			}
+			catch(\Exception $e){
+				error_log($e->getMessage());
+			}
+
+		// okay, generate $okayResponse
+
+		}		
+
+		
+		return $this->redirect($this->generateUrl('users'));
+	}
+	
+		/**
+	 * Edits an existing UserProjectGroup entity.
+	 *
+	 * @Route("/{id}/deletegroup", name="group_delete", methods={"GET"})
+	 */
+    public function deletegroupAction(Request $request, $id)
+    {
+       
+		if ($request->isMethod('get')) {
+			
+	
+			try{
+				
+				$em = $this->getDoctrine()->getManager();		
+
+				$userGr = $em->getRepository(Group::class)->find($id);
+
+				if (!$userGr) {
+					throw $this->createNotFoundException('Unable to find User entity.');
+				}
+				$groupsFind = $em->getRepository('App\Entity\UserGroup')->findBy(array('group'=>$userGr->getId()));
+		
+				if (!$groupsFind)
+				{
+
+					$em->remove($userGr);
+					$em->flush();
+
+					// okay, generate $okayResponse
+					return $this->redirect($this->generateUrl('users'));
+				}
+				else
+				{
+					$this->addFlash('warning', 'cannot delete as user is attached!');
+					return $this->redirect($this->generateUrl('fos_user_group_list'));
+				}
+			}
+				catch(\Exception $e){
+					error_log($e->getMessage());
+				}
+			
+		}
+		
+	
+		
+		return $this->redirect($this->generateUrl('fos_user_group_list'));
+	
+	
 }
 }

@@ -35,7 +35,7 @@ class GroupController extends Controller
      */
     public function listAction()
     {
-		echo "sa";
+		
         $groups = $this->get('groups')->findGroups();
 
         return $this->render('FOSUserBundle:Group:list.html.twig', array(
@@ -154,15 +154,26 @@ class GroupController extends Controller
     public function deleteAction(Request $request, $groupName)
     {
         $group = $this->findGroupBy('name', $groupName);
-        $this->get('groups')->deleteGroup($group);
+		
+		$groupsFind = $em->getRepository('App\Entity\UserGroup')->findBy(array('group'=>$group->getId()));
+		
+		if (!$groupsFind)
+		{
+		
+			$this->get('groups')->deleteGroup($group);
 
-        $response = new RedirectResponse($this->generateUrl('user_group_list'));
+			$response = new RedirectResponse($this->generateUrl('user_group_list'));
 
-        /** @var $dispatcher \Symfony\Component\EventDispatcher\EventDispatcherInterface */
-        $dispatcher = $this->get('event_dispatcher');
-        $dispatcher->dispatch(FOSUserEvents::GROUP_DELETE_COMPLETED, new FilterGroupResponseEvent($group, $request, $response));
+			/** @var $dispatcher \Symfony\Component\EventDispatcher\EventDispatcherInterface */
+			$dispatcher = $this->get('event_dispatcher');
+			$dispatcher->dispatch(FOSUserEvents::GROUP_DELETE_COMPLETED, new FilterGroupResponseEvent($group, $request, $response));
 
-        return $response;
+			return $response;
+		}
+		else
+		{
+			echo "user is attached to this group";
+		}
     }
 
     /**

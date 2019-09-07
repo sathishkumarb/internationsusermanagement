@@ -1,7 +1,7 @@
-{% block content -%}
+{% block content %}
 <h1>Users</h1>
 
-<table class="records_list">
+<table class="records_list" style="border:1px solid black;  width:100%">
     <thead>
         <tr>
             <th>Username</th>
@@ -15,42 +15,40 @@
                 <td>{{ entity.user.username }}</td>
 				<td>
                    
-					<table>				
+					<table style="border:1px solid black;">
 					
 					
 					 {% for group in entity.groups %}
 					 <tr>
 						 <td>
+						
 						   {{ group.group.name }}
 						   <ul>
                        
 								<li>
-									<a href="{{ path('user_edit', { 'id': entity.user.id }) }}">edit</a>
+									<a href="{{ path('user_group_delete', { 'id': group.id }) }}">remove group</a>
 								</li>
-							
-							   
-								<li>
-									<a href="{{ path('user_delete', { 'id': entity.user.id }) }}">delete</a>
-								</li>
+								
 							</ul>
 						 </td>
 					 </tr>
+					 
 					 {% endfor %}
 					
-					 <table>
+					 </table>
                 </td>
                 <td>                 
-					 <ul>
+					<ul>
                        
-								<li>
-									<a href="{{ path('user_edit', { 'id': entity.user.id }) }}">edit</a>
-								</li>
-							
-							   
-								<li>
-									<a href="{{ path('user_delete', { 'id': entity.user.id }) }}">delete</a>
-								</li>
-							</ul>
+						<li>
+							<a href="{{ path('user_edit', { 'id': entity.user.id }) }}">edit</a>
+						</li>
+					
+					   
+						<li>
+							<a href="{{ path('user_delete', { 'id': entity.user.id }) }}">delete</a>
+						</li>
+					</ul> 
 					
                 </td>
             </tr>

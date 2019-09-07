@@ -31,6 +31,11 @@ class UserGroup
      * @ORM\JoinColumn(name="group_id", referencedColumnName="id")
      */
     protected $group;
+	
+	public function getId()
+	{
+		return $this->id;
+	}
 
 
     /**
