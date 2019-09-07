@@ -11,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 use App\Entity\User as User;
 use App\Form\UserEditFormType;
@@ -65,7 +66,7 @@ class UserController extends AbstractController {
      * @Method({"GET", "POST"})
 	 * @Template()
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request, UserPasswordEncoderInterface $encoder)
     {
   
         $em = $this->getDoctrine()->getManager();
@@ -78,7 +79,13 @@ class UserController extends AbstractController {
         if ($form->isSubmitted() && $form->isValid()) {
 
             /* Handle Uploaded File */
-            $data = $form->getData();          
+            $data = $form->getData(); 		
+			
+			$encoded = $encoder->encodePassword($user, $user->getPlainPassword());
+
+			$user->setPassword($encoded);
+			
+			$user->setEnabled(true);			
 
 			$em->persist($user);
 			$em->flush();
