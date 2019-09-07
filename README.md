@@ -23,9 +23,11 @@ php bin/console make:migration
 
 Initial or default admin user creation:: atleast one admin user
 
-php bin/console fos:user:create
+php bin/console fos:user:create "admin"
 
-php bin/console fos:user:promote "username" ROLE_SUPER_ADMIN
+php bin/console fos:user:activate "admin"
+
+php bin/console fos:user:promote "admin" ROLE_SUPER_ADMIN
 ```
 
 ## Usage
