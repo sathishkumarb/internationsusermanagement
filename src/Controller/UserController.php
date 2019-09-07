@@ -4,12 +4,17 @@ namespace App\Controller;
 
 
 use Symfony\Component\HttpFoundation\Request;
+
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+
 use App\Entity\User as User;
 use App\Form\UserEditFormType;
+use App\Form\UserFormType;
 
 use App\Entity\UserGroup as UserGroup;
 
@@ -48,6 +53,67 @@ class UserController extends AbstractController {
             'entities' => $usergroups,
         );
     }
+	
+	
+	
+	
+	
+	/**
+     * Creates a new user entity.
+     *
+     * @Route("/new", name="user_new")
+     * @Method({"GET", "POST"})
+	 * @Template()
+     */
+    public function createAction(Request $request)
+    {
+  
+        $em = $this->getDoctrine()->getManager();
+        $user = new User();
+
+
+        $form = $this->createCreateForm($user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            /* Handle Uploaded File */
+            $data = $form->getData();          
+
+			$em->persist($user);
+			$em->flush();
+            
+			$this->addFlash('error', 'Username or email already exists');
+			
+			return $this->redirect($this->generateUrl('users'));
+            
+        }
+
+        return [
+            'entity' => $user,
+            'form' => $form->createView(),
+        ];
+    }
+
+    /**
+     * Creates a form to edit a User entity.
+     *
+     * @param user $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createCreateForm(User $entity)
+    {
+        $form = $this->createForm(UserFormType::class, $entity, array(
+            'action' => $this->generateUrl('user_new'),
+            'method' => 'POST',
+        ));        
+
+        return $form;
+    }
+
+
+
 
     /**
      * Lists all ConsequencesCategories entities.

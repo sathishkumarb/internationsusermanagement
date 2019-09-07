@@ -8,6 +8,7 @@
         "friendsofsymfony/rest-bundle": "^2.5",
         "friendsofsymfony/user-bundle": "~2.0",
         "jms/serializer-bundle": "^3.4",
+        "onurb/doctrine-yuml-bundle": "^1.1",
         "sensio/framework-extra-bundle": "^5.4",
         "symfony/console": "4.3.*",
         "symfony/dotenv": "4.3.*",

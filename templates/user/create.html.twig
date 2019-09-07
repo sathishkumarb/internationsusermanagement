@@ -1,0 +1,36 @@
+{% block content -%}
+    <style type="text/css">
+        .passwordLabel
+        {
+            padding-left:390px;
+        }
+        .confirmpasswordLabel
+        {
+            padding-left:340px;
+        }
+        .text-container{
+            float: right;
+        }
+    </style>
+<h1>Add User </h1>
+
+    {{ form_start(form) }}
+    <table style="width: 100%">
+    {{ form_row(form.username) }}
+    {{ form_row(form.email) }}
+
+    {{ form_row(form.plainPassword, { 'attr': {'class': 'form-control', 'placeholder': 'Enter your password', 'value':''}  }) }}
+    
+
+  
+    {{ form_end(form) }}
+    </table>
+
+<ul class="record_actions">
+    <li>
+        <a href="{{ path('users') }}">
+            Back to users
+        </a>
+    </li>
+</ul>
+{% endblock %}
