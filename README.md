@@ -80,6 +80,11 @@ fos_user_group_edit                 GET|POST   ANY      ANY    /group/{groupName
 fos_user_group_delete               GET        ANY      ANY    /group/{groupName}/delete
 ```
 
+## reference UML
+```$xslt
+InternationsAdminPanel.svg (Database Model)
+yuml-mapping.png (Small domain Model)
+```
 
 ## Notes
 
