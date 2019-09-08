@@ -19,6 +19,8 @@ composer require stof/doctrine-extensions-bundle
 ## Set Up
 
 ```bash
+php bin/console doctrine:database:create
+
 php bin/console make:migration
 
 php bin/console doctrine:migrations:migrate
@@ -82,12 +84,15 @@ fos_user_group_delete               GET        ANY      ANY    /group/{groupName
 ## Notes
 
 ```
+EasyAdmin with sonatabundles is readily available but i did not go with that approach.
+ 
 FOSUSERBUNDLE is overridden and customer user group controller created along overrding fosuser
 
 HTTP PUT & DELETE was not handled via form might be a slight security breach here due to time constraints in edit and delete routes
 
+PURE FOS_USER_BUNDLE + Symfony 4 Rest based auth + API creation can be done following the link below
 
-PURE FOSUSERBUNDLE+symfony4 rest based auth+ API creation can be done following the link https://medium.com/@joeymasip/how-to-create-an-api-with-symfony-4-and-jwt-b2334a8fbec2
+https://medium.com/@joeymasip/how-to-create-an-api-with-symfony-4-and-jwt-b2334a8fbec2
 
 Please dont hesitate to compliant a bug or feedback
 ```
